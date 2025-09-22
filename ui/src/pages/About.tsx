@@ -56,14 +56,14 @@ const About = () => {
           Advanced AI-based rockfall prediction and alert system designed to enhance safety 
           in open-pit mining operations through intelligent monitoring and predictive analytics.
         </p>
-        <div className="flex items-center justify-center space-x-2">
+        {/* <div className="flex items-center justify-center space-x-2">
           <Badge variant="secondary" className="bg-success text-success-foreground">
             Version 2.1.0
           </Badge>
           <Badge variant="secondary" className="bg-primary text-primary-foreground">
             Production Ready
           </Badge>
-        </div>
+        </div> */}
       </div>
 
       {/* Key Features */}

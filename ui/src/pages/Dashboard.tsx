@@ -128,7 +128,7 @@ const Dashboard = () => {
           <MapView title="Live Risk Map" showControls={false} />
           
           {/* Quick Stats */}
-          <div className="bg-card border border-border rounded-lg p-4 space-y-3">
+          {/* <div className="bg-card border border-border rounded-lg p-4 space-y-3">
             <h3 className="font-semibold text-foreground">Quick Stats</h3>
             <div className="space-y-2">
               <div className="flex justify-between">
@@ -148,7 +148,7 @@ const Dashboard = () => {
                 <span className="text-sm font-medium text-success">99.8%</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

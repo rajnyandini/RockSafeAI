@@ -33,7 +33,7 @@ const Navbar = () => {
           <Settings className="h-5 w-5" />
         </Button>
 
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-primary text-primary-foreground">MS</AvatarFallback>
           </Avatar>
@@ -41,7 +41,7 @@ const Navbar = () => {
             <p className="font-medium">Mine Supervisor</p>
             <p className="text-muted-foreground text-xs">Site Alpha-7</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </nav>
   );
