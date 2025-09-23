@@ -11,6 +11,7 @@ import Alerts from "./pages/Alerts";
 import Settings from "./pages/Settings";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import Predict from "./pages/Predict";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
                 <Route path="/alerts" element={<Alerts />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/predict" element={<Predict />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
