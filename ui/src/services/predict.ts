@@ -37,6 +37,19 @@ export interface PredictionResponse {
   used_threshold: number;
   raw_score: number;
   message: string | null;
+  sms_alert?: {
+    success: boolean;
+    message: string;
+    sent_count: number;
+    failed_count: number;
+    risk_level?: string;
+    details?: Array<{
+      phone_number: string;
+      status: string;
+      message_sid: string | null;
+      error: string | null;
+    }>;
+  } | null;
 }
 
 const BACKEND_URL = 'http://127.0.0.1:8000';

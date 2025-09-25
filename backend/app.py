@@ -2,6 +2,15 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Optional, Any
 import joblib, json, os, numpy as np
+from datetime import datetime
+import logging
+
+# Import SMS service
+from sms_service import sms_service
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
 
@@ -45,6 +54,7 @@ class PredictResponse(BaseModel):
     used_threshold: float
     raw_score: Optional[float] = None
     message: Optional[str] = None
+    sms_alert: Optional[Dict[str, Any]] = None  # SMS alert status
 
 @app.get("/metadata")
 def metadata():
@@ -54,6 +64,39 @@ def metadata():
         "feature_cols_sample": FEATURE_COLS[:10],
         "metadata": METADATA
     }
+
+@app.get("/sms/status")
+def get_sms_status():
+    """Get SMS service status and configuration"""
+    from config import SMS_ALERTS_ENABLED, EMERGENCY_CONTACTS, TWILIO_AUTH_TOKEN
+    return {
+        "sms_enabled": SMS_ALERTS_ENABLED,
+        "twilio_configured": TWILIO_AUTH_TOKEN != '[AuthToken]',
+        "emergency_contacts_count": len(EMERGENCY_CONTACTS),
+        "emergency_contacts": EMERGENCY_CONTACTS  # Remove this in production for security
+    }
+
+@app.post("/sms/test")
+async def test_sms_alert(test_data: Dict[str, Any] = None):
+    """Test SMS alert functionality"""
+    try:
+        # Use test data or default values
+        test_probability = test_data.get('probability', 0.8) if test_data else 0.8
+        test_location = test_data.get('location', 'Test Location') if test_data else 'Test Location'
+        
+        result = sms_service.send_sms_alert(
+            probability=test_probability,
+            location=test_location,
+            additional_data={"Test": "This is a test alert"}
+        )
+        
+        return {
+            "message": "Test SMS alert completed",
+            "result": result
+        }
+    except Exception as e:
+        logger.error(f"SMS test failed: {e}")
+        raise HTTPException(status_code=500, detail=f"SMS test failed: {e}")
 
 def prepare_array_from_map(fmap):
     """
@@ -125,4 +168,48 @@ async def predict_by_array(payload: PredictByArray = None, payload_map: PredictB
     threshold = float(METADATA.get("cost_threshold", 0.5))
     pred_binary = int(prob > threshold)
 
-    return PredictResponse(prediction=pred_binary, probability=prob, used_threshold=threshold, raw_score=raw_score)
+    # SMS Alert Logic
+    sms_alert_result = None
+    if prob is not None:
+        try:
+            # Extract location from input data for SMS
+            location = "Unknown"
+            if payload_map and payload_map.feature_map:
+                location = payload_map.feature_map.get("location_id", "Unknown")
+            
+            # Prepare additional data for SMS
+            additional_data = {
+                "Raw Score": f"{raw_score:.4f}" if raw_score else "N/A",
+                "Threshold": f"{threshold:.2f}",
+                "Prediction": "HIGH RISK" if pred_binary else "LOW RISK"
+            }
+            
+            # Send SMS alert if risk is HIGH or CRITICAL
+            sms_alert_result = sms_service.send_sms_alert(
+                probability=prob,
+                location=location,
+                additional_data=additional_data
+            )
+            
+            # Log the alert attempt
+            if sms_alert_result['success']:
+                logger.info(f"SMS alert sent successfully. Risk: {sms_alert_result.get('risk_level')}, Probability: {prob:.3f}")
+            else:
+                logger.warning(f"SMS alert failed or skipped: {sms_alert_result.get('message')}")
+                
+        except Exception as e:
+            logger.error(f"SMS alert service error: {e}")
+            sms_alert_result = {
+                'success': False,
+                'message': f'SMS service error: {str(e)}',
+                'sent_count': 0,
+                'failed_count': 0
+            }
+
+    return PredictResponse(
+        prediction=pred_binary, 
+        probability=prob, 
+        used_threshold=threshold, 
+        raw_score=raw_score,
+        sms_alert=sms_alert_result
+    )

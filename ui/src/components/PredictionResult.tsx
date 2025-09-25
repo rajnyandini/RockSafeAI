@@ -1,7 +1,7 @@
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
-import { AlertTriangle, ShieldCheck, AlertOctagon, Info } from 'lucide-react';
+import { AlertTriangle, ShieldCheck, AlertOctagon, Info, MessageSquare, CheckCircle, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +12,19 @@ interface PredictionResultProps {
     used_threshold: number;
     raw_score: number;
     message: string | null;
+    sms_alert?: {
+      success: boolean;
+      message: string;
+      sent_count: number;
+      failed_count: number;
+      risk_level?: string;
+      details?: Array<{
+        phone_number: string;
+        status: string;
+        message_sid: string | null;
+        error: string | null;
+      }>;
+    } | null;
   } | null;
 }
 
@@ -152,6 +165,72 @@ export function PredictionResult({ result }: PredictionResultProps) {
                 <p className="text-lg font-semibold">{result.raw_score.toFixed(4)}</p>
               </div>
             </motion.div>
+
+            {/* SMS Alert Status */}
+            {result.sms_alert && (riskLevel === 'Critical' || riskLevel === 'High') && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className={cn(
+                  "p-4 rounded-lg border",
+                  result.sms_alert.success 
+                    ? "bg-green-500/10 text-green-700 border-green-200" 
+                    : "bg-orange-500/10 text-orange-700 border-orange-200"
+                )}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  {result.sms_alert.success ? (
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-orange-600" />
+                  )}
+                  <MessageSquare className="w-5 h-5" />
+                  <span className="font-medium">SMS Alert Status</span>
+                </div>
+                
+                <div className="space-y-2">
+                  <p className="text-sm">
+                    <span className="font-medium">Message:</span> {result.sms_alert.message}
+                  </p>
+                  
+                  {result.sms_alert.success && result.sms_alert.sent_count > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="outline" className="text-green-600 border-green-300">
+                        📱 {result.sms_alert.sent_count} SMS Sent
+                      </Badge>
+                      {result.sms_alert.risk_level && (
+                        <Badge variant="destructive">
+                          {result.sms_alert.risk_level} Alert
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                  
+                  {result.sms_alert.failed_count > 0 && (
+                    <Badge variant="outline" className="text-orange-600 border-orange-300">
+                      ⚠️ {result.sms_alert.failed_count} Failed
+                    </Badge>
+                  )}
+                  
+                  {result.sms_alert.success && riskLevel === 'Critical' && (
+                    <motion.p 
+                      animate={{ opacity: [1, 0.7, 1] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                      className="text-sm font-medium text-red-600 mt-2"
+                    >
+                      🚨 Emergency contacts have been notified! Follow evacuation procedures immediately.
+                    </motion.p>
+                  )}
+                  
+                  {result.sms_alert.success && riskLevel === 'High' && (
+                    <p className="text-sm font-medium text-orange-600 mt-2">
+                      ⚠️ Emergency contacts have been notified. Implement safety protocols immediately.
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            )}
 
             {/* Action Status */}
             <motion.div

@@ -1,19 +1,37 @@
 # 🏔️ RockSafe AI
 
-> Advanced AI-Powered Rockfall Prediction & Alert System for Mining Safety
+<div align="center">
 
-![Mining Safety](https://img.shields.io/badge/Mining-Safety-orange)
-![AI Powered](https://img.shields.io/badge/AI-Powered-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
-![React](https://img.shields.io/badge/React-Frontend-cyan)
+> **Advanced AI-Powered Rockfall Prediction & Emergency Alert System**  
+> *Protecting Lives Through Intelligent Mining Safety Technology*
 
-## 🚀 Features
+![Mining Safety](https://img.shields.io/badge/Mining-Safety-orange?style=for-the-badge)
+![AI Powered](https://img.shields.io/badge/AI-Powered-blue?style=for-the-badge)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green?style=for-the-badge)
+![React](https://img.shields.io/badge/React-Frontend-cyan?style=for-the-badge)
+![SMS Alerts](https://img.shields.io/badge/SMS-Alerts-red?style=for-the-badge)
 
-### 🤖 AI Core
-- Advanced machine learning model for real-time rockfall prediction
-- Multi-feature analysis including geological, weather & sensor data
-- High accuracy risk assessment with probability scores
-- Automated threshold adjustment system
+</div>
+
+---
+
+## ✨ **Key Features**
+
+### 🤖 **AI-Powered Risk Assessment**
+- **Advanced Machine Learning**: Voting Classifier with Random Forest + SVM
+- **30+ Feature Analysis**: Geological, environmental, and sensor data fusion
+- **Real-time Processing**: Sub-100ms prediction response time
+- **Probability Scoring**: Confidence-based risk assessment (0-100%)
+- **Automated Preprocessing**: Feature scaling and normalization
+- **Location Intelligence**: GPS-based categorical encoding
+
+### 🚨 **Emergency Alert System**
+- **🔴 CRITICAL Alerts** (>75%): Immediate evacuation SMS alerts
+- **🟠 HIGH Risk Alerts** (50-75%): Urgent safety protocol SMS notifications  
+- **📱 Twilio Integration**: Professional SMS delivery service
+- **📞 Multi-Contact Support**: Broadcast alerts to emergency teams
+- **⚡ Real-time Notifications**: Instant alert delivery
+- **📋 Alert Tracking**: SMS delivery status and reporting
 
 ### 🎯 Prediction Interface
 - Real-time risk assessment dashboard

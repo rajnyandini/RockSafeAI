@@ -6,3 +6,7 @@ flask
 flask-cors
 gunicorn
 joblib
+fastapi
+uvicorn
+pydantic
+twilio
