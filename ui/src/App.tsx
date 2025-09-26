@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Predict from "./pages/Predict";
+import { LiveMonitoring } from "./pages/LiveMonitoring";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/risk-map" element={<RiskMap />} />
                 <Route path="/alerts" element={<Alerts />} />
+                <Route path="/live-monitoring" element={<LiveMonitoring />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/predict" element={<Predict />} />

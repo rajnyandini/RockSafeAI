@@ -7,7 +7,8 @@ import {
   Info,
   TrendingUp,
   Activity,
-  Brain
+  Brain,
+  Wifi
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Risk Map", href: "/risk-map", icon: Map },
   { name: "Alerts", href: "/alerts", icon: AlertTriangle },
+  { name: "Live Monitoring", href: "/live-monitoring", icon: Wifi },
   { name: "Analytics", href: "/analytics", icon: TrendingUp },
   { name: "Monitoring", href: "/monitoring", icon: Activity },
   { name: "Predict", href: "/predict", icon: Brain },
