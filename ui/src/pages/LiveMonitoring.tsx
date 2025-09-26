@@ -9,18 +9,41 @@ import { Separator } from '@/components/ui/separator';
 import { MapPin, RefreshCw, Wifi, AlertTriangle } from 'lucide-react';
 import { LivePredictionResult } from '@/components/LivePredictionResult';
 import { monitorLocation, LiveMonitorResponse } from '@/services/liveMonitor';
+import { useRiskMapStore } from '@/services/riskMap';
+
+// Helper function to determine risk level
+function getRiskLevel(probability: number) {
+  if (probability >= 0.75) return 'critical' as const;
+  if (probability >= 0.5) return 'high' as const;
+  if (probability >= 0.25) return 'medium' as const;
+  return 'low' as const;
+}
+
+// Map city names to location IDs
+const LOCATION_ID_MAP = {
+  "Jharia, Jharkhand, India": "jharia_main",
+  "Panaji, Goa, India": "panaji_west",
+  "Bellary, Karnataka, India": "bellary_central",
+  "Dhanbad, Jharkhand, India": "dhanbad_north",
+  "Raipur, Chhattisgarh, India": "raipur_east",
+  "Nagpur, Maharashtra, India": "nagpur_south",
+  "Chandrapur, Maharashtra, India": "chandrapur_main", 
+  "Singrauli, Madhya Pradesh, India": "singrauli_west",
+  "Talcher, Odisha, India": "talcher_north",
+  "Korba, Chhattisgarh, India": "korba_central"
+};
 
 const MINING_CITIES = [
   { label: "Jharia, Jharkhand, India", value: "Jharia, Jharkhand, India" },
   { label: "Panaji, Goa, India", value: "Panaji, Goa, India" },
   { label: "Bellary, Karnataka, India", value: "Bellary, Karnataka, India" },
   { label: "Raipur, Chhattisgarh, India", value: "Raipur, Chhattisgarh, India" },
-  { label: "Ranchi, Jharkhand, India", value: "Ranchi, Jharkhand, India" },
-  { label: "Kolar, Karnataka, India", value: "Kolar, Karnataka, India" },
+  { label: "Nagpur, Maharashtra, India", value: "Nagpur, Maharashtra, India" },
+  { label: "Chandrapur, Maharashtra, India", value: "Chandrapur, Maharashtra, India" },
   { label: "Dhanbad, Jharkhand, India", value: "Dhanbad, Jharkhand, India" },
-  { label: "Singareni, Telangana, India", value: "Singareni, Telangana, India" },
-  { label: "Korba, Chhattisgarh, India", value: "Korba, Chhattisgarh, India" },
-  { label: "Jamshedpur, Jharkhand, India", value: "Jamshedpur, Jharkhand, India" }
+  { label: "Singrauli, Madhya Pradesh, India", value: "Singrauli, Madhya Pradesh, India" },
+  { label: "Talcher, Odisha, India", value: "Talcher, Odisha, India" },
+  { label: "Korba, Chhattisgarh, India", value: "Korba, Chhattisgarh, India" }
 ];
 
 export function LiveMonitoring() {
@@ -30,6 +53,7 @@ export function LiveMonitoring() {
   const [result, setResult] = useState<LiveMonitorResponse | null>(null);
   const [error, setError] = useState<string>('');
   const [inputMode, setInputMode] = useState<'dropdown' | 'custom'>('dropdown');
+  const updateZoneRisk = useRiskMapStore(state => state.updateZoneRisk);
 
   const handleMonitor = async () => {
     const locationToMonitor = inputMode === 'dropdown' ? selectedLocation : customLocation;
@@ -46,6 +70,13 @@ export function LiveMonitoring() {
     try {
       const response = await monitorLocation(locationToMonitor);
       setResult(response);
+      
+      // Update risk map for known locations
+      if (inputMode === 'dropdown' && LOCATION_ID_MAP[locationToMonitor as keyof typeof LOCATION_ID_MAP]) {
+        const locationId = LOCATION_ID_MAP[locationToMonitor as keyof typeof LOCATION_ID_MAP];
+        const riskLevel = getRiskLevel(response.probability);
+        updateZoneRisk(locationId, riskLevel, response.probability * 100);
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to monitor location');
     } finally {

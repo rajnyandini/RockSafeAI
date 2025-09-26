@@ -54,6 +54,14 @@ export interface PredictionResponse {
 
 const BACKEND_URL = 'http://127.0.0.1:8000';
 
+// Helper function to determine risk level
+function getRiskLevel(probability: number) {
+  if (probability >= 0.75) return 'critical' as const;
+  if (probability >= 0.5) return 'high' as const;
+  if (probability >= 0.25) return 'medium' as const;
+  return 'low' as const;
+}
+
 export async function predictRockfall(features: Partial<FeatureMap>): Promise<PredictionResponse> {
   try {
     const requestData = {

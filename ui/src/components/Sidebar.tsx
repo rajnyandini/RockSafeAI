@@ -17,8 +17,6 @@ const navigation = [
   { name: "Risk Map", href: "/risk-map", icon: Map },
   { name: "Alerts", href: "/alerts", icon: AlertTriangle },
   { name: "Live Monitoring", href: "/live-monitoring", icon: Wifi },
-  { name: "Analytics", href: "/analytics", icon: TrendingUp },
-  { name: "Monitoring", href: "/monitoring", icon: Activity },
   { name: "Predict", href: "/predict", icon: Brain },
   { name: "Settings", href: "/settings", icon: Settings },
   { name: "About", href: "/about", icon: Info },

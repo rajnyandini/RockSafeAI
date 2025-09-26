@@ -4,11 +4,21 @@ import { PredictionResult } from '../components/PredictionResult';
 import { predictRockfall } from '../services/predict';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { useRiskMapStore } from '@/services/riskMap';
+
+// Helper function to determine risk level
+function getRiskLevel(probability: number) {
+  if (probability >= 0.75) return 'critical' as const;
+  if (probability >= 0.5) return 'high' as const;
+  if (probability >= 0.25) return 'medium' as const;
+  return 'low' as const;
+}
 
 export default function Predict() {
   const [result, setResult] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const updateZoneRisk = useRiskMapStore(state => state.updateZoneRisk);
 
   const handleSubmit = async (formData: any) => {
     setIsLoading(true);
@@ -28,6 +38,12 @@ export default function Predict() {
       const prediction = await predictRockfall(processedData);
       console.log('Received prediction:', prediction); // Debug log
       setResult(prediction);
+      
+      // Update risk map zone
+      if (processedData.location_id) {
+        const riskLevel = getRiskLevel(prediction.probability);
+        updateZoneRisk(processedData.location_id, riskLevel, prediction.probability * 100);
+      }
     } catch (err: any) {
       console.error('Prediction failed:', err);
       setError(err.message);

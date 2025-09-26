@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,65 +12,33 @@ import {
   RefreshCw,
   MapPin,
   TrendingUp,
-  AlertTriangle
+  AlertTriangle,
+  Loader2
 } from "lucide-react";
+import { useRiskMapStore } from "@/services/riskMap";
+import { generateRiskMapPDF } from "@/utils/exportPDF";
 
 const RiskMap = () => {
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const zones = useRiskMapStore((state) => state.zones);
 
-  // Enhanced risk zones with more data
-  const riskZones = [
-    { 
-      id: "z1", 
-      name: "North Wall", 
-      risk: "low" as const, 
-      x: 20, 
-      y: 30,
-      probability: 15,
-      lastIncident: "45 days ago",
-      sensors: 8
-    },
-    { 
-      id: "z2", 
-      name: "East Pit", 
-      risk: "medium" as const, 
-      x: 70, 
-      y: 25,
-      probability: 45,
-      lastIncident: "12 days ago", 
-      sensors: 12
-    },
-    { 
-      id: "z3", 
-      name: "South Slope", 
-      risk: "high" as const, 
-      x: 45, 
-      y: 80,
-      probability: 78,
-      lastIncident: "3 days ago",
-      sensors: 15
-    },
-    { 
-      id: "z4", 
-      name: "West Ridge", 
-      risk: "critical" as const, 
-      x: 15, 
-      y: 60,
-      probability: 92,
-      lastIncident: "6 hours ago",
-      sensors: 18
-    },
-    { 
-      id: "z5", 
-      name: "Central Bench", 
-      risk: "low" as const, 
-      x: 50, 
-      y: 45,
-      probability: 22,
-      lastIncident: "67 days ago",
-      sensors: 6
-    },
-  ];
+  const handleExport = async () => {
+    if (!mapRef.current) return;
+    
+    try {
+      setIsExporting(true);
+      const pdf = await generateRiskMapPDF(zones, mapRef.current, sensorStatusData);
+      pdf.save('rockfall-risk-assessment.pdf');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // All zone data is now managed by the riskMap store
 
   // Historical data for selected zone
   const zoneHistoryData = [
@@ -105,9 +73,18 @@ const RiskMap = () => {
             <Filter className="h-4 w-4 mr-2" />
             Filters
           </Button>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={handleExport}
+            disabled={isExporting}
+          >
+            {isExporting ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4 mr-2" />
+            )}
+            {isExporting ? 'Exporting...' : 'Export PDF'}
           </Button>
           <Button variant="outline" size="sm">
             <RefreshCw className="h-4 w-4 mr-2" />
@@ -120,11 +97,13 @@ const RiskMap = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Map - Takes up most space */}
         <div className="lg:col-span-3">
-          <MapView 
-            title="Interactive Risk Map" 
-            zones={riskZones}
-            showControls={true}
-          />
+          <div ref={mapRef}>
+            <MapView 
+              title="Interactive Risk Map" 
+              zones={zones}
+              showControls={true}
+            />
+          </div>
         </div>
 
         {/* Right Sidebar - Zone Details */}
@@ -136,7 +115,7 @@ const RiskMap = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {riskZones.map((zone) => (
+                {zones.map((zone) => (
                   <div
                     key={zone.id}
                     className={`p-3 border rounded-lg cursor-pointer transition-colors hover:bg-muted/50 ${
@@ -217,7 +196,7 @@ const RiskMap = () => {
         
         <TabsContent value="zones" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {riskZones.slice(0, 3).map((zone) => (
+            {zones.slice(0, 3).map((zone) => (
               <Card key={zone.id}>
                 <CardHeader>
                   <CardTitle className="text-lg">{zone.name}</CardTitle>
