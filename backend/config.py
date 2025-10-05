@@ -8,11 +8,9 @@ TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID', 'your_account_sid')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN', 'your_auth_token')
 TWILIO_FROM_NUMBER = os.getenv('TWILIO_FROM_NUMBER', '+1234567890')
 
-# Emergency Contact Phone Numbers (consider moving to database)
+# Emergency Contact Phone Numbers 
 EMERGENCY_CONTACTS = [
-    '+918940142540',  
-    '+918456023876',  
-    '+917718032710', 
+
 ]
 
 # SMS Alert Messages

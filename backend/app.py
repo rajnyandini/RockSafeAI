@@ -46,7 +46,7 @@ app.add_middleware(
 )
 
 class PredictByArray(BaseModel):
-    features: List[float]         # must be exactly len(FEATURE_COLS)
+    features: List[float]         
 
 class PredictByMap(BaseModel):
     feature_map: Dict[str, Any]  # dict of feature_name -> value
@@ -60,7 +60,7 @@ class PredictResponse(BaseModel):
     sms_alert: Optional[Dict[str, Any]] = None  # SMS alert status
 
 class LiveMonitorRequest(BaseModel):
-    location_name: str  # e.g. "Panaji, Goa, India"
+    location_name: str  
     location_id: Optional[str] = None  # auto-generated if not provided
 
 class LiveMonitorResponse(BaseModel):
@@ -91,14 +91,14 @@ def get_sms_status():
         "sms_enabled": SMS_ALERTS_ENABLED,
         "twilio_configured": TWILIO_AUTH_TOKEN != '[AuthToken]',
         "emergency_contacts_count": len(EMERGENCY_CONTACTS),
-        "emergency_contacts": EMERGENCY_CONTACTS  # Remove this in production for security
+        "emergency_contacts": EMERGENCY_CONTACTS  
     }
 
 @app.post("/sms/test")
 async def test_sms_alert(test_data: Dict[str, Any] = None):
     """Test SMS alert functionality"""
     try:
-        # Use test data or default values
+        # test data 
         test_probability = test_data.get('probability', 0.8) if test_data else 0.8
         test_location = test_data.get('location', 'Test Location') if test_data else 'Test Location'
         
@@ -155,7 +155,7 @@ async def predict_by_array(payload: PredictByArray = None, payload_map: PredictB
     else:
         raise HTTPException(status_code=400, detail="Send either 'features' (ordered list) or 'feature_map' (dict).")
 
-    # apply preprocessing if exists
+    # apply preprocessing 
     try:
         if preproc is not None:
             x_proc = preproc.transform(x)
@@ -164,7 +164,7 @@ async def predict_by_array(payload: PredictByArray = None, payload_map: PredictB
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Preprocessing failed: {e}")
 
-    # get probability if available
+    # get probability 
     raw_score = None
     prob = None
     try:
@@ -270,7 +270,7 @@ async def monitor_location(request: LiveMonitorRequest):
         # Prepare array for model prediction
         x = prepare_array_from_map(processed_features)
         
-        # Apply preprocessing if exists
+        # Apply preprocessing 
         try:
             if preproc is not None:
                 x_proc = preproc.transform(x)
