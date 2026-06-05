@@ -1,4 +1,4 @@
-#  RockSafe AI
+#  RockSafe AI 
 
 <div align="center">
 
@@ -230,4 +230,4 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for deta
 - AI Safety Initiative
 
 ---
-Made for mining safety by team π/0 for the MInistry of Mines!
+Made for mining safety 
