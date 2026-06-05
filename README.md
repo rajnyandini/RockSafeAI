@@ -1,4 +1,4 @@
-# 🏔️ RockSafe AI
+#  RockSafe AI
 
 <div align="center">
 
@@ -15,9 +15,9 @@
 
 ---
 
-## ✨ **Key Features**
+##  **Key Features**
 
-### 🤖 **AI-Powered Risk Assessment**
+###  **AI-Powered Risk Assessment**
 - **Advanced Machine Learning**: Voting Classifier with Random Forest + SVM
 - **30+ Feature Analysis**: Geological, environmental, and sensor data fusion
 - **Real-time Processing**: Sub-100ms prediction response time
@@ -25,39 +25,39 @@
 - **Automated Preprocessing**: Feature scaling and normalization
 - **Location Intelligence**: GPS-based categorical encoding
 
-### � **Live Monitoring System**
-- **🌐 Real-time API Integration**: Weather, elevation, and rainfall data
-- **🏭 Mining Location Database**: 10+ popular mining sites pre-configured
-- **📍 Custom Location Support**: Monitor any global location
-- **⚡ Instant Risk Assessment**: Live environmental data + ML predictions
-- **🔄 Manual Refresh**: On-demand monitoring with latest data
-- **📊 Environmental Display**: Temperature, rainfall, wind speed, elevation
+###  **Live Monitoring System**
+- **Real-time API Integration**: Weather, elevation, and rainfall data
+- **Mining Location Database**: 10+ popular mining sites pre-configured
+- **Custom Location Support**: Monitor any global location
+- **Instant Risk Assessment**: Live environmental data + ML predictions
+- **Manual Refresh**: On-demand monitoring with latest data
+- **Environmental Display**: Temperature, rainfall, wind speed, elevation
 
-### �🚨 **Emergency Alert System**
-- **🔴 CRITICAL Alerts** (>75%): Immediate evacuation SMS alerts
-- **🟠 HIGH Risk Alerts** (50-75%): Urgent safety protocol SMS notifications  
-- **📱 Twilio Integration**: Professional SMS delivery service
-- **📞 Multi-Contact Support**: Broadcast alerts to emergency teams
-- **⚡ Real-time Notifications**: Instant alert delivery
-- **📋 Alert Tracking**: SMS delivery status and reporting
+###  **Emergency Alert System**
+- **CRITICAL Alerts** (>75%): Immediate evacuation SMS alerts
+- **HIGH Risk Alerts** (50-75%): Urgent safety protocol SMS notifications  
+- **Twilio Integration**: Professional SMS delivery service
+- **Multi-Contact Support**: Broadcast alerts to emergency teams
+- **Real-time Notifications**: Instant alert delivery
+- **Alert Tracking**: SMS delivery status and reporting
 
-### 🎯 **Intelligent Prediction Interface**
+### **Intelligent Prediction Interface**
 - **Dual Input Modes**: 
-  - 📝 Interactive form with real-time validation
-  - 📄 JSON batch processing for automation
-- **🎨 Animated Risk Visualization**: Motion graphics with color-coded feedback
-- **📊 Progress Indicators**: Dynamic probability visualization
-- **⚠️ Contextual Messages**: Actionable safety recommendations
-- **🔄 Real-time Updates**: Live prediction refreshing
+  - Interactive form with real-time validation
+  - JSON batch processing for automation
+- **Animated Risk Visualization**: Motion graphics with color-coded feedback
+- **Progress Indicators**: Dynamic probability visualization
+- **Contextual Messages**: Actionable safety recommendations
+- **Real-time Updates**: Live prediction refreshing
 
-### 📈 **Advanced Analytics Dashboard**
-- **📍 Interactive Risk Mapping**: Geographic visualization
-- **📊 Trend Analysis**: Historical risk pattern analysis  
-- **🎯 Alert Management**: Categorized alert system
-- **📈 Performance Metrics**: Model accuracy and response time monitoring
-- **🔍 Sensor Integration**: Real-time device status monitoring
+### **Advanced Analytics Dashboard**
+- **Interactive Risk Mapping**: Geographic visualization
+- **Trend Analysis**: Historical risk pattern analysis  
+- **Alert Management**: Categorized alert system
+- **Performance Metrics**: Model accuracy and response time monitoring
+- **Sensor Integration**: Real-time device status monitoring
 
-### 🎯 Prediction Interface
+### Prediction Interface
 - Real-time risk assessment dashboard
 - Interactive risk visualization
 - Dual input modes:
@@ -65,7 +65,7 @@
   - Direct JSON input for batch processing
 - Animated risk level indicators with status alerts
 
-### 📊 Monitoring & Analytics
+### Monitoring & Analytics
 - Dynamic risk mapping
 - Real-time sensor data integration
 - Historical trend analysis
@@ -79,7 +79,7 @@
 - **UI Components**: shadcn/ui + Tailwind CSS
 - **Data Visualization**: Recharts
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js >= 16
@@ -116,9 +116,9 @@ npm run dev
 **Backend**: `http://localhost:8000` | **API Docs**: `http://localhost:8000/docs`  
 **Frontend**: `http://localhost:5173`
 
-## 📚 Usage
+## Usage
 
-### 🎯 **Risk Prediction**
+### **Risk Prediction**
 1. Navigate to `http://localhost:5173`
 2. Access the **Prediction Center** from sidebar
 3. Choose input method:
@@ -136,7 +136,7 @@ npm run dev
 4. View live environmental data + ML risk assessment
 5. Automatic SMS alerts for dangerous conditions
 
-### 🚨 **Alert Management** 
+### **Alert Management** 
 - **CRITICAL Risk (>75%)**: Immediate evacuation SMS alerts
 - **HIGH Risk (50-75%)**: Safety protocol SMS notifications
 - **Alert Dashboard**: View all alerts and SMS delivery status
@@ -169,7 +169,7 @@ MODEL_PATH=./models/model.pkl
    - Get free API key (1000 requests/day)
    - Add TOMORROW_API_KEY to .env
 
-## 🛡️ Risk Levels & SMS Alerts
+##  Risk Levels & SMS Alerts
 
 | Level | Range | Action | SMS Alert |
 |-------|--------|---------|-----------|
